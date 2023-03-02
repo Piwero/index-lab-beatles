@@ -13,6 +13,7 @@ class NonAuthenticatedSongSerializer(serializers.ModelSerializer):
             "name",
             "album",
             "rank",
+            "writer",
         )
 
     def save(self, **kwargs):

@@ -132,6 +132,26 @@ class TestRankingEndPoint:
         assert response.json()[1]["rank"] == 20
         assert response.json()[2]["rank"] == 30
 
+    def test_non_authenticated_user_can_get_list_of_songs_with_writer(
+        self, all_songs, client
+    ):
+        response = client.get(reverse("api:v1:songs-list"))
+
+        assert response.status_code == 200, response.data
+        assert response.json()[0]["writer"] == "John Lennon\nPaul McCartney"
+        assert response.json()[1]["writer"] == "Paul McCartney"
+        assert response.json()[2]["writer"] == "John Lennon"
+
+    def test_non_authenticated_user_cannot_get_list_of_songs_with_year_release(
+        self, all_songs, client
+    ):
+        response = client.get(reverse("api:v1:songs-list"))
+
+        assert response.status_code == 200, response.data
+        assert "year_release" not in response.json()[0]
+        assert "year_release" not in response.json()[1]
+        assert "year_release" not in response.json()[2]
+
     def test_serialize_song_name_for_authenticated_user(self, all_songs):
         serializer = AuthenticatedSongSerializer(all_songs, many=True)
 
