@@ -1,4 +1,5 @@
 import pytest
+from rest_framework.reverse import reverse
 
 from api.v1.song_ranking_endpoints import NonAuthenticatedSongSerializer
 from songs.models import Song
@@ -84,3 +85,33 @@ class TestRankingEndPoint:
         assert serializer.data[0]["rank"] == 15
         assert serializer.data[1]["rank"] == 20
         assert serializer.data[2]["rank"] == 30
+
+    def test_non_authenticated_user_can_get_list_of_songs_with_name(
+        self, all_songs, client
+    ):
+        response = client.get(reverse("api:v1:non-auth-songs"))
+
+        assert response.status_code == 200, response.data
+        assert response.json()[0]["name"] == "A Hard Day's Night"
+        assert response.json()[1]["name"] == "I Should Have Known Better"
+        assert response.json()[2]["name"] == "Can't Buy Me Love"
+
+    def test_non_authenticated_user_can_get_list_of_songs_with_album(
+        self, all_songs, client
+    ):
+        response = client.get(reverse("api:v1:non-auth-songs"))
+
+        assert response.status_code == 200, response.data
+        assert response.json()[0]["album"] == "A Hard Day's Night"
+        assert response.json()[1]["album"] == "Magical Mystery Tour"
+        assert response.json()[2]["album"] == "A Hard Day's Night"
+
+    def test_non_authenticated_user_can_get_list_of_songs_with_rank(
+        self, all_songs, client
+    ):
+        response = client.get(reverse("api:v1:non-auth-songs"))
+
+        assert response.status_code == 200, response.data
+        assert response.json()[0]["rank"] == 15
+        assert response.json()[1]["rank"] == 20
+        assert response.json()[2]["rank"] == 30
