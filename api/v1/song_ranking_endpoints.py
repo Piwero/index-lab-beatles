@@ -1,4 +1,7 @@
-from rest_framework import serializers
+from rest_framework import (
+    serializers,
+    status,
+)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -40,3 +43,10 @@ class SongRankingViewSet(APIView):
     def get(self, request, *args, **kwargs):
         serializer = self.get_serializer_class()(self.get_queryset(), many=True)
         return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer_class()(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(data=serializer.data, status=status.HTTP_201_CREATED)

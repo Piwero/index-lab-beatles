@@ -474,3 +474,35 @@ class TestRankingEndPoint:
         assert response.json()[0]["UG_favourites"] == 1000000
         assert response.json()[1]["UG_favourites"] == 2000000
         assert response.json()[2]["UG_favourites"] == 3000000
+
+    def test_authenticated_user_can_post_new_song(self, logged_in_client):
+        url = reverse("api:v1:songs-list")
+        data = {
+            "name": "test",
+            "rank": 1,
+            "album": "test",
+            "writer": "test",
+            "year_release": 2020,
+            "singer": "test",
+            "song_time": "02:32",
+            "spotify_streams": "1,000,000",
+            "rolling_stone_rank": 1,
+            "NME_rank": 1,
+            "UG_favourites": 1000000,
+            "UG_views": 1000000,
+        }
+        response = logged_in_client.post(url, data=data)
+
+        assert response.status_code == 201, response.data
+        assert Song.objects.count() == 1
+        assert Song.objects.first().name == "test"
+        assert Song.objects.first().album == "test"
+        assert Song.objects.first().rank == 1
+        assert Song.objects.first().writer == "test"
+        assert Song.objects.first().year_release == 2020
+        assert Song.objects.first().singer == "test"
+        assert Song.objects.first().song_time == "02:32"
+        assert Song.objects.first().spotify_streams == "1,000,000"
+        assert Song.objects.first().rolling_stone_rank == 1
+        assert Song.objects.first().NME_rank == 1
+        assert Song.objects.first().UG_favourites == 1000000
