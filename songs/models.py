@@ -9,9 +9,8 @@ class Song(models.Model):
     year_release = models.IntegerField()
     singer = models.CharField(max_length=80)
     song_time = models.CharField(max_length=5)
-    spotify_streams = models.IntegerField()
+    spotify_streams = models.CharField(max_length=80)
     rolling_stone_rank = models.IntegerField()
     NME_rank = models.IntegerField()
     UG_views = models.IntegerField()
     UG_favourites = models.IntegerField()
-
