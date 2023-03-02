@@ -1,11 +1,24 @@
 import pytest
+from django.contrib.auth.models import User
 from rest_framework.reverse import reverse
 
 from api.v1.song_ranking_endpoints import (
     AuthenticatedSongSerializer,
     NonAuthenticatedSongSerializer,
+    SongRankingViewSet,
 )
 from songs.models import Song
+
+
+@pytest.fixture
+def user(db):
+    return User.objects.create_user(username="test_user", password="test_password")
+
+
+@pytest.fixture
+def logged_in_client(client, user):
+    client.force_login(user)
+    return client
 
 
 @pytest.fixture
@@ -202,3 +215,172 @@ class TestRankingEndPoint:
         assert serializer.data[0]["UG_favourites"] == 1000000
         assert serializer.data[1]["UG_favourites"] == 2000000
         assert serializer.data[2]["UG_favourites"] == 3000000
+
+    def test_user_authenticated_can_get_list_of_songs_with_name(
+        self,
+        all_songs,
+        logged_in_client,
+    ):
+        url = reverse("api:v1:songs-list")
+        response = logged_in_client.get(url)
+
+        assert response.status_code == 200, response.data
+        assert response.json()[0]["name"] == "A Hard Day's Night"
+        assert response.json()[1]["name"] == "I Should Have Known Better"
+        assert response.json()[2]["name"] == "Can't Buy Me Love"
+
+    def test_user_authenticated_can_get_list_of_songs_with_album(
+        self,
+        all_songs,
+        logged_in_client,
+    ):
+        url = reverse("api:v1:songs-list")
+        response = logged_in_client.get(url)
+
+        assert response.status_code == 200, response.data
+        assert response.json()[0]["album"] == "A Hard Day's Night"
+        assert response.json()[1]["album"] == "Magical Mystery Tour"
+        assert response.json()[2]["album"] == "A Hard Day's Night"
+
+    def test_user_authenticated_can_get_list_of_songs_with_rank(
+        self,
+        all_songs,
+        logged_in_client,
+    ):
+        url = reverse("api:v1:songs-list")
+        response = logged_in_client.get(url)
+
+        assert response.status_code == 200, response.data
+        assert response.json()[0]["rank"] == 15
+        assert response.json()[1]["rank"] == 20
+        assert response.json()[2]["rank"] == 30
+
+    def test_user_authenticated_can_get_list_of_songs_with_writer(
+        self,
+        all_songs,
+        logged_in_client,
+    ):
+        url = reverse("api:v1:songs-list")
+        response = logged_in_client.get(url)
+
+        assert response.status_code == 200, response.data
+        assert response.json()[0]["writer"] == "John Lennon\nPaul McCartney"
+        assert response.json()[1]["writer"] == "Paul McCartney"
+        assert response.json()[2]["writer"] == "John Lennon"
+
+    def test_user_authenticated_can_get_list_of_songs_with_year_release(
+        self,
+        all_songs,
+        logged_in_client,
+    ):
+        url = reverse("api:v1:songs-list")
+        response = logged_in_client.get(url)
+
+        assert response.status_code == 200, response.data
+        assert response.json()[0]["year_release"] == 1964
+        assert response.json()[1]["year_release"] == 1966
+        assert response.json()[2]["year_release"] == 1966
+
+    def test_user_authenticated_can_get_list_of_songs_with_singer(
+        self,
+        all_songs,
+        logged_in_client,
+    ):
+        url = reverse("api:v1:songs-list")
+        response = logged_in_client.get(url)
+
+        assert response.status_code == 200, response.data
+        assert response.json()[0]["singer"] == "John Lennon\n(with Paul McCartney)"
+        assert response.json()[1]["singer"] == "Paul McCartne)"
+        assert response.json()[2]["singer"] == "John Lennon"
+
+    def test_user_authenticated_can_get_list_of_songs_with_song_time(
+        self,
+        all_songs,
+        logged_in_client,
+    ):
+        url = reverse("api:v1:songs-list")
+        response = logged_in_client.get(url)
+
+        assert response.status_code == 200, response.data
+        assert response.json()[0]["song_time"] == "02:32"
+        assert response.json()[1]["song_time"] == "02:32"
+        assert response.json()[2]["song_time"] == "02:32"
+
+    def test_user_authenticated_can_get_list_of_songs_with_spotify_streams(
+        self,
+        all_songs,
+        logged_in_client,
+    ):
+        url = reverse("api:v1:songs-list")
+        response = logged_in_client.get(url)
+
+        assert response.status_code == 200, response.data
+        assert response.json()[0]["spotify_streams"] == "1,000,000"
+        assert response.json()[1]["spotify_streams"] == "2,000,000"
+        assert response.json()[2]["spotify_streams"] == "3,000,000"
+
+    def test_user_authenticated_can_get_list_of_songs_with_rollling_stone_rank(
+        self,
+        all_songs,
+        logged_in_client,
+    ):
+        url = reverse("api:v1:songs-list")
+        response = logged_in_client.get(url)
+
+        assert response.status_code == 200, response.data
+        assert response.json()[0]["rolling_stone_rank"] == 1
+        assert response.json()[1]["rolling_stone_rank"] == 2
+        assert response.json()[2]["rolling_stone_rank"] == 3
+
+    def test_user_authenticated_can_get_list_of_songs_with_NME_rank(
+        self,
+        all_songs,
+        logged_in_client,
+    ):
+        url = reverse("api:v1:songs-list")
+        response = logged_in_client.get(url)
+
+        assert response.status_code == 200, response.data
+        assert response.json()[0]["NME_rank"] == 1
+        assert response.json()[1]["NME_rank"] == 2
+        assert response.json()[2]["NME_rank"] == 3
+
+    def test_user_authenticated_can_get_list_of_songs_with_UG_favourites(
+        self,
+        all_songs,
+        logged_in_client,
+    ):
+        url = reverse("api:v1:songs-list")
+        response = logged_in_client.get(url)
+
+        assert response.status_code == 200, response.data
+        assert response.json()[0]["UG_favourites"] == 1000000
+        assert response.json()[1]["UG_favourites"] == 2000000
+        assert response.json()[2]["UG_favourites"] == 3000000
+
+    def test_user_authenticated_can_get_list_of_songs_with_UG_views(
+        self,
+        all_songs,
+        logged_in_client,
+    ):
+        url = reverse("api:v1:songs-list")
+        response = logged_in_client.get(url)
+
+        assert response.status_code == 200, response.data
+        assert response.json()[0]["UG_views"] == 1000000
+        assert response.json()[1]["UG_views"] == 2000000
+        assert response.json()[2]["UG_views"] == 3000000
+
+    def test_user_authenticated_can_get_list_of_songs_with_UG_favourites(
+        self,
+        all_songs,
+        logged_in_client,
+    ):
+        url = reverse("api:v1:songs-list")
+        response = logged_in_client.get(url)
+
+        assert response.status_code == 200, response.data
+        assert response.json()[0]["UG_favourites"] == 1000000
+        assert response.json()[1]["UG_favourites"] == 2000000
+        assert response.json()[2]["UG_favourites"] == 3000000
