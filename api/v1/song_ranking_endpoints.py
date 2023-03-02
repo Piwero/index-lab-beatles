@@ -1,7 +1,6 @@
-from rest_framework import (
-    serializers,
-    viewsets,
-)
+from rest_framework import serializers
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from songs.models import Song
 
@@ -26,11 +25,18 @@ class AuthenticatedSongSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class SongRankingViewSet(viewsets.ModelViewSet):
+class SongRankingViewSet(APIView):
     queryset = Song.objects.all()
+
+    def get_queryset(self):
+        return self.queryset.order_by("rank")
 
     def get_serializer_class(self):
         if self.request.user.is_authenticated:
             return AuthenticatedSongSerializer
         else:
             return NonAuthenticatedSongSerializer
+
+    def get(self, request, *args, **kwargs):
+        serializer = self.get_serializer_class()(self.get_queryset(), many=True)
+        return Response(serializer.data)

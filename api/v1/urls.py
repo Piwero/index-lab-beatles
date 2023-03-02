@@ -7,7 +7,7 @@ app_name = "v1"
 urlpatterns = [
     path(
         "songs",
-        SongRankingViewSet.as_view({"get": "list"}),
+        SongRankingViewSet.as_view(),
         name="songs-list",
     ),
 ]
