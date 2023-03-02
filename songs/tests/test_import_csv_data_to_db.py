@@ -2,15 +2,13 @@ import csv
 
 import pytest
 
+from songs.services import ParseCSVDataHandler
+
 
 @pytest.fixture
 def beatles_songs():
-    data = []
-    with open("songs/tests/data_sample.csv", newline="", encoding="utf-8") as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            data.append(row)
-    return data
+    parser = ParseCSVDataHandler("songs/tests/data_sample.csv")
+    return parser.parse()
 
 
 class TestImportCSVDataToDB:
@@ -57,13 +55,16 @@ class TestImportCSVDataToDB:
 
         def test_rolling_stone_rank(self, beatles_songs):
             assert (
-                beatles_songs[0]["Rolling Stone 100 Greatest Beatles Songs Ranking"] == "11"
+                beatles_songs[0]["Rolling Stone 100 Greatest Beatles Songs Ranking"]
+                == "11"
             )
             assert (
-                beatles_songs[1]["Rolling Stone 100 Greatest Beatles Songs Ranking"] == "21"
+                beatles_songs[1]["Rolling Stone 100 Greatest Beatles Songs Ranking"]
+                == "21"
             )
             assert (
-                beatles_songs[2]["Rolling Stone 100 Greatest Beatles Songs Ranking"] == "29"
+                beatles_songs[2]["Rolling Stone 100 Greatest Beatles Songs Ranking"]
+                == "29"
             )
 
         def test_nme_rank(self, beatles_songs):
