@@ -1,4 +1,5 @@
 from rest_framework import (
+    exceptions,
     serializers,
     status,
 )
@@ -47,6 +48,12 @@ class SongRankingViewSet(APIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer_class()(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        try:
+            serializer.save()
+
+        except NotImplementedError:
+            raise exceptions.ValidationError(
+                "Non authenticated users cannot create songs."
+            )
 
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)

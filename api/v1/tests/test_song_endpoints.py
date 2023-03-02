@@ -506,3 +506,25 @@ class TestRankingEndPoint:
         assert Song.objects.first().rolling_stone_rank == 1
         assert Song.objects.first().NME_rank == 1
         assert Song.objects.first().UG_favourites == 1000000
+
+    def test_non_authenticated_user_cannot_post_new_song(self, db, client):
+        url = reverse("api:v1:songs-list")
+        data = {
+            "name": "test",
+            "rank": 1,
+            "album": "test",
+            "writer": "test",
+            "year_release": 2020,
+            "singer": "test",
+            "song_time": "02:32",
+            "spotify_streams": "1,000,000",
+            "rolling_stone_rank": 1,
+            "NME_rank": 1,
+            "UG_favourites": 1000000,
+            "UG_views": 1000000,
+        }
+        response = client.post(url, data=data)
+
+        assert response.status_code == 400, response.data
+        assert response.json()[0] == "Non authenticated users cannot create songs."
+        assert Song.objects.count() == 0
