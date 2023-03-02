@@ -19,12 +19,17 @@ class NonAuthenticatedSongSerializer(serializers.ModelSerializer):
         raise NotImplementedError("This serializer is read-only.")
 
 
-class NonAuthenticatedSongViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Song.objects.all()
-    serializer_class = NonAuthenticatedSongSerializer
-
-
 class AuthenticatedSongSerializer(serializers.ModelSerializer):
     class Meta:
         model = Song
         fields = "__all__"
+
+
+class SongRankingViewSet(viewsets.ModelViewSet):
+    queryset = Song.objects.all()
+
+    def get_serializer_class(self):
+        if self.request.user.is_authenticated:
+            return AuthenticatedSongSerializer
+        else:
+            return NonAuthenticatedSongSerializer

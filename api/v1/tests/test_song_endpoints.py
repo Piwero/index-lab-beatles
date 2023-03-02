@@ -92,7 +92,7 @@ class TestRankingEndPoint:
     def test_non_authenticated_user_can_get_list_of_songs_with_name(
         self, all_songs, client
     ):
-        response = client.get(reverse("api:v1:non-auth-songs"))
+        response = client.get(reverse("api:v1:songs-list"))
 
         assert response.status_code == 200, response.data
         assert response.json()[0]["name"] == "A Hard Day's Night"
@@ -102,7 +102,7 @@ class TestRankingEndPoint:
     def test_non_authenticated_user_can_get_list_of_songs_with_album(
         self, all_songs, client
     ):
-        response = client.get(reverse("api:v1:non-auth-songs"))
+        response = client.get(reverse("api:v1:songs-list"))
 
         assert response.status_code == 200, response.data
         assert response.json()[0]["album"] == "A Hard Day's Night"
@@ -112,7 +112,7 @@ class TestRankingEndPoint:
     def test_non_authenticated_user_can_get_list_of_songs_with_rank(
         self, all_songs, client
     ):
-        response = client.get(reverse("api:v1:non-auth-songs"))
+        response = client.get(reverse("api:v1:songs-list"))
 
         assert response.status_code == 200, response.data
         assert response.json()[0]["rank"] == 15
