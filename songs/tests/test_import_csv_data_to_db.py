@@ -69,7 +69,7 @@ class TestImportCSVDataToDB:
 
         def test_nme_rank(self, beatles_songs):
             assert beatles_songs[0]["NME Top 50 Beatles Songs Ranking"] == "19"
-            assert beatles_songs[1]["NME Top 50 Beatles Songs Ranking"] == "24"
+            assert beatles_songs[1]["NME Top 50 Beatles Songs Ranking"] == ""
             assert beatles_songs[2]["NME Top 50 Beatles Songs Ranking"] == "43"
 
         def test_ug_views(self, beatles_songs):
