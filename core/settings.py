@@ -25,8 +25,10 @@ INSTALLED_APPS = [
     # Third party apps
     "rest_framework",
     "django_extensions",
+    "drf_spectacular",
     # Custom apps
     "songs",
+    "api",
 ]
 
 MIDDLEWARE = [
@@ -63,6 +65,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 SPECTACULAR_SETTINGS = {
