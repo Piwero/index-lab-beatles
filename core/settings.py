@@ -22,6 +22,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Third party apps
+    "rest_framework",
+    "django_extensions",
     # Custom apps
     "songs",
 ]
@@ -56,6 +59,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
