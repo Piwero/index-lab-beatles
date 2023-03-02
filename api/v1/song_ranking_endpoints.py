@@ -22,3 +22,9 @@ class NonAuthenticatedSongSerializer(serializers.ModelSerializer):
 class NonAuthenticatedSongViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Song.objects.all()
     serializer_class = NonAuthenticatedSongSerializer
+
+
+class AuthenticatedSongSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Song
+        fields = "__all__"

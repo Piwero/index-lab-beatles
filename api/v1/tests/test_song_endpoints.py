@@ -1,7 +1,10 @@
 import pytest
 from rest_framework.reverse import reverse
 
-from api.v1.song_ranking_endpoints import NonAuthenticatedSongSerializer
+from api.v1.song_ranking_endpoints import (
+    AuthenticatedSongSerializer,
+    NonAuthenticatedSongSerializer,
+)
 from songs.models import Song
 
 
@@ -115,3 +118,87 @@ class TestRankingEndPoint:
         assert response.json()[0]["rank"] == 15
         assert response.json()[1]["rank"] == 20
         assert response.json()[2]["rank"] == 30
+
+    def test_serialize_song_name_for_authenticated_user(self, all_songs):
+        serializer = AuthenticatedSongSerializer(all_songs, many=True)
+
+        assert serializer.data[0]["name"] == "A Hard Day's Night"
+        assert serializer.data[1]["name"] == "I Should Have Known Better"
+        assert serializer.data[2]["name"] == "Can't Buy Me Love"
+
+    def test_serialize_song_album_for_authenticated_user(self, all_songs):
+        serializer = AuthenticatedSongSerializer(all_songs, many=True)
+
+        assert serializer.data[0]["album"] == "A Hard Day's Night"
+        assert serializer.data[1]["album"] == "Magical Mystery Tour"
+        assert serializer.data[2]["album"] == "A Hard Day's Night"
+
+    def test_serialize_song_rank_for_authenticated_user(self, all_songs):
+        serializer = AuthenticatedSongSerializer(all_songs, many=True)
+
+        assert serializer.data[0]["rank"] == 15
+        assert serializer.data[1]["rank"] == 20
+        assert serializer.data[2]["rank"] == 30
+
+    def test_serialize_song_writer_for_authenticated_user(self, all_songs):
+        serializer = AuthenticatedSongSerializer(all_songs, many=True)
+
+        assert serializer.data[0]["writer"] == "John Lennon\nPaul McCartney"
+        assert serializer.data[1]["writer"] == "Paul McCartney"
+        assert serializer.data[2]["writer"] == "John Lennon"
+
+    def test_serialize_song_year_release_for_authenticated_user(self, all_songs):
+        serializer = AuthenticatedSongSerializer(all_songs, many=True)
+
+        assert serializer.data[0]["year_release"] == 1964
+        assert serializer.data[1]["year_release"] == 1966
+        assert serializer.data[2]["year_release"] == 1966
+
+    def test_serialize_song_singer_for_authenticated_user(self, all_songs):
+        serializer = AuthenticatedSongSerializer(all_songs, many=True)
+
+        assert serializer.data[0]["singer"] == "John Lennon\n(with Paul McCartney)"
+        assert serializer.data[1]["singer"] == "Paul McCartne)"
+        assert serializer.data[2]["singer"] == "John Lennon"
+
+    def test_serialize_song_song_time_for_authenticated_user(self, all_songs):
+        serializer = AuthenticatedSongSerializer(all_songs, many=True)
+
+        assert serializer.data[0]["song_time"] == "02:32"
+        assert serializer.data[1]["song_time"] == "02:32"
+        assert serializer.data[2]["song_time"] == "02:32"
+
+    def test_serialize_song_spotify_streams_for_authenticated_user(self, all_songs):
+        serializer = AuthenticatedSongSerializer(all_songs, many=True)
+
+        assert serializer.data[0]["spotify_streams"] == "1,000,000"
+        assert serializer.data[1]["spotify_streams"] == "2,000,000"
+        assert serializer.data[2]["spotify_streams"] == "3,000,000"
+
+    def test_serialize_song_rolling_stone_rank_for_authenticated_user(self, all_songs):
+        serializer = AuthenticatedSongSerializer(all_songs, many=True)
+
+        assert serializer.data[0]["rolling_stone_rank"] == 1
+        assert serializer.data[1]["rolling_stone_rank"] == 2
+        assert serializer.data[2]["rolling_stone_rank"] == 3
+
+    def test_serialize_song_NME_rank_for_authenticated_user(self, all_songs):
+        serializer = AuthenticatedSongSerializer(all_songs, many=True)
+
+        assert serializer.data[0]["NME_rank"] == 1
+        assert serializer.data[1]["NME_rank"] == 2
+        assert serializer.data[2]["NME_rank"] == 3
+
+    def test_serialize_song_UG_views_for_authenticated_user(self, all_songs):
+        serializer = AuthenticatedSongSerializer(all_songs, many=True)
+
+        assert serializer.data[0]["UG_views"] == 1000000
+        assert serializer.data[1]["UG_views"] == 2000000
+        assert serializer.data[2]["UG_views"] == 3000000
+
+    def test_serialize_song_UG_favourites_for_authenticated_user(self, all_songs):
+        serializer = AuthenticatedSongSerializer(all_songs, many=True)
+
+        assert serializer.data[0]["UG_favourites"] == 1000000
+        assert serializer.data[1]["UG_favourites"] == 2000000
+        assert serializer.data[2]["UG_favourites"] == 3000000
