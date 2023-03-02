@@ -63,9 +63,19 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
     ],
-
 }
 
+SPECTACULAR_SETTINGS = {
+    "TITLE": "The Beatles API",
+    "DESCRIPTION": "It shows the ranking of the songs of the Beatles",
+    "VERSION": "1.0.0",
+    "SCHEMA_PATH_PREFIX": "/api",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SWAGGER_UI_SETTINGS": {
+        "displayRequestDuration": True,
+        "docExpansion": "none",
+    },
+}
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
