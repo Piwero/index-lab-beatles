@@ -152,6 +152,76 @@ class TestRankingEndPoint:
         assert "year_release" not in response.json()[1]
         assert "year_release" not in response.json()[2]
 
+    def test_non_authenticated_user_cannot_get_list_of_songs_with_singer(
+        self, all_songs, client
+    ):
+        response = client.get(reverse("api:v1:songs-list"))
+
+        assert response.status_code == 200, response.data
+        assert "singer" not in response.json()[0]
+        assert "singer" not in response.json()[1]
+        assert "singer" not in response.json()[2]
+
+    def test_non_authenticated_user_cannot_get_list_of_songs_with_song_time(
+        self, all_songs, client
+    ):
+        response = client.get(reverse("api:v1:songs-list"))
+
+        assert response.status_code == 200, response.data
+        assert "song_time" not in response.json()[0]
+        assert "song_time" not in response.json()[1]
+        assert "song_time" not in response.json()[2]
+
+    def test_non_authenticated_user_cannot_get_list_of_songs_with_spotify_streams(
+        self, all_songs, client
+    ):
+        response = client.get(reverse("api:v1:songs-list"))
+
+        assert response.status_code == 200, response.data
+        assert "spotify_streams" not in response.json()[0]
+        assert "spotify_streams" not in response.json()[1]
+        assert "spotify_streams" not in response.json()[2]
+
+    def test_non_authenticated_user_cannot_get_list_of_songs_with_rolling_stone_rank(
+        self, all_songs, client
+    ):
+        response = client.get(reverse("api:v1:songs-list"))
+
+        assert response.status_code == 200, response.data
+        assert "rolling_stone_rank" not in response.json()[0]
+        assert "rolling_stone_rank" not in response.json()[1]
+        assert "rolling_stone_rank" not in response.json()[2]
+
+    def test_non_authenticated_user_cannot_get_list_of_songs_with_NME_rank(
+        self, all_songs, client
+    ):
+        response = client.get(reverse("api:v1:songs-list"))
+
+        assert response.status_code == 200, response.data
+        assert "NME_rank" not in response.json()[0]
+        assert "NME_rank" not in response.json()[1]
+        assert "NME_rank" not in response.json()[2]
+
+    def test_non_authenticated_user_cannot_get_list_of_songs_with_UG_views(
+        self, all_songs, client
+    ):
+        response = client.get(reverse("api:v1:songs-list"))
+
+        assert response.status_code == 200, response.data
+        assert "UG_views" not in response.json()[0]
+        assert "UG_views" not in response.json()[1]
+        assert "UG_views" not in response.json()[2]
+
+    def test_non_authenticated_user_cannot_get_list_of_songs_with_UG_favourites(
+        self, all_songs, client
+    ):
+        response = client.get(reverse("api:v1:songs-list"))
+
+        assert response.status_code == 200, response.data
+        assert "UG_favourites" not in response.json()[0]
+        assert "UG_favourites" not in response.json()[1]
+        assert "UG_favourites" not in response.json()[2]
+
     def test_serialize_song_name_for_authenticated_user(self, all_songs):
         serializer = AuthenticatedSongSerializer(all_songs, many=True)
 
