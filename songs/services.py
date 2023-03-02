@@ -22,16 +22,16 @@ class ParseCSVDataHandler:
                 name=song["Song Name"],
                 album=song["Album"],
                 writer=song["Song Writer"],
-                rank=song["Rank"],
-                year_release=song["Year Released"],
+                rank=song["Rank"] or None,
+                year_release=song["Year Released"] or None,
                 singer=song["Singer"],
                 song_time=song["Song Time"],
                 spotify_streams=song["Spotify Streams"],
                 rolling_stone_rank=song[
                     "Rolling Stone 100 Greatest Beatles Songs Ranking"
-                ],
-                NME_rank=song["NME Top 50 Beatles Songs Ranking"],
-                UG_views=song["UG Views"],
-                UG_favourites=song["UG Favourites"],
+                ] or None,
+                NME_rank=song["NME Top 50 Beatles Songs Ranking"] or None,
+                UG_views=song["UG Views"] or None,
+                UG_favourites=song["UG Favourites"] or None,
             )
         return Song.objects.all()
