@@ -40,6 +40,7 @@ python-decouple = "^3.7"
 
 [tool.poetry.dev-dependencies]
 black = "^23.1"
+django-extensions = "^3.2.1"
 flake9 = "3.8.3.post2"
 ipdb = "^0.13.11"
 isort = "^5.12.0"
@@ -52,3 +53,11 @@ pytest-xdist = "^3.2.0"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "core.settings"
+python_files = "tests.py test_*.py *_tests.py"
+addopts = "--pdbcls=IPython.terminal.debugger:TerminalPdb -p no:warnings --cov ."
+testpaths = [
+    "tests",
+]
