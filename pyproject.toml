@@ -39,7 +39,7 @@ python-decouple = "^3.7"
 
 
 [tool.poetry.dev-dependencies]
-black = "^23.3"
+black = "^24.0.0"
 django-extensions = "^3.2.1"
 flake9 = "3.8.3.post2"
 ipdb = "^0.13.13"
